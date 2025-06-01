@@ -1,0 +1,33 @@
+<div>
+  <h2>Home Page</h2>
+
+  <div *ngIf="isLoading">
+    <p>Loading data...</p>
+  </div>
+
+  <div *ngIf="error && !isLoading">
+    <p style="color: red;">Error: {{ error }}</p>
+  </div>
+
+  <div *ngIf="apiData && !isLoading && !error">
+    <h3>Data Received:</h3>
+    <!-- Assuming apiData is the data_payload object itself -->
+    <div *ngIf="dataKeys.length > 0; else noDataPayload">
+        <ul>
+            <li *ngFor="let key of dataKeys">
+                <strong>{{ key }}:</strong> {{ apiData![key] }}
+            </li>
+        </ul>
+    </div>
+    <ng-template #noDataPayload>
+        <p>Data payload is empty or not in the expected format.</p>
+    </ng-template>
+  </div>
+
+  <div *ngIf="!isLoading && !apiData && !error && !activatedRoute.snapshot.queryParamMap.has('c_number')">
+    <p>Welcome! Please use a link with a c_number to load specific data, or proceed to request assistance.</p>
+  </div>
+
+  <hr>
+  <a routerLink="/assistance">Go to Assistance Request Page</a>
+</div>

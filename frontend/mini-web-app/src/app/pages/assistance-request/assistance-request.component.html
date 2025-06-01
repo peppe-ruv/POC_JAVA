@@ -1,0 +1,67 @@
+<div>
+  <h2>Assistance Request</h2>
+  <p>Please fill out the form below to request assistance.</p>
+
+  <div *ngIf="submissionSuccess" class="alert alert-success">
+    {{ submissionSuccess }}
+  </div>
+
+  <div *ngIf="submissionError" class="alert alert-danger">
+    Error: {{ submissionError }}
+  </div>
+
+  <form [formGroup]="assistanceForm" (ngSubmit)="onSubmit()" *ngIf="!submissionSuccess">
+    <div>
+      <label for="name">Name:</label>
+      <input type="text" id="name" formControlName="name">
+      <div *ngIf="assistanceForm.controls['name'].invalid && (assistanceForm.controls['name'].dirty || assistanceForm.controls['name'].touched)" class="error-message">
+        Name is required.
+      </div>
+    </div>
+
+    <div>
+      <label for="email">Email:</label>
+      <input type="email" id="email" formControlName="email">
+      <div *ngIf="assistanceForm.controls['email'].invalid && (assistanceForm.controls['email'].dirty || assistanceForm.controls['email'].touched)" class="error-message">
+        <span *ngIf="assistanceForm.controls['email'].errors?.['required']">Email is required.</span>
+        <span *ngIf="assistanceForm.controls['email'].errors?.['email']">Please enter a valid email.</span>
+      </div>
+    </div>
+
+    <div>
+      <label for="issue_description">Issue Description:</label>
+      <textarea id="issue_description" formControlName="issue_description" rows="5"></textarea>
+      <div *ngIf="assistanceForm.controls['issue_description'].invalid && (assistanceForm.controls['issue_description'].dirty || assistanceForm.controls['issue_description'].touched)" class="error-message">
+        Issue description is required.
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="assistanceForm.invalid || isLoading">
+      <span *ngIf="isLoading">Submitting...</span>
+      <span *ngIf="!isLoading">Submit Request</span>
+    </button>
+  </form>
+
+  <hr>
+  <a routerLink="/">Back to Home</a>
+</div>
+
+<style>
+  .error-message {
+    color: red;
+    font-size: 0.9em;
+  }
+  .alert {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+  }
+  .alert-success {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  .alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+</style>
